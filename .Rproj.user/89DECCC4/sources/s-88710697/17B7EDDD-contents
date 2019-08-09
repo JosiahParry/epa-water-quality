@@ -1,0 +1,55 @@
+library(broom)
+library(glue)
+
+
+estimates <- tidy(mod) %>% 
+  mutate(term = case_when(
+    term == "x" ~ measures_lookup[[x_var]],
+    term == "z" ~ measures_lookup[[z_var]],
+    TRUE ~ term
+  ),
+  `Estimate (SE)` = glue::glue("{round(estimate, 2)} ({round(std.error, 2)})"),
+  `p-value` = round(p.value, 3)) %>% 
+  select(Term = term, `Estimate (SE)`, `p-value`)
+
+
+estimates
+
+bind_rows(
+  mutate_all(estimates,as.character), 
+  tibble(Term = "", `Estimate (SE)` = "", `p-value` = ""),
+  glance(mod) %>% 
+    select(R2 = 1, `Adj. R2` = 2, AIC, `DF` = df.residual) %>% 
+    gather(Term, `Estimate (SE)`) %>% 
+    mutate(`Estimate (SE)` = as.character(round(`Estimate (SE)`, 2)),
+           `p-value` = "")) %>% 
+  knitr::kable()
+
+  
+models_combined <- tibble(model = list(mod)) %>% 
+  mutate(coefs = model %>% map(tidy),
+         details = model %>% map(glance),
+         model_number = 1:n())
+
+model_coefs <- models_combined %>% 
+  unnest(coefs) %>% 
+  mutate(value = as.character(glue("{round(estimate, 2)} ({round(std.error, 2)})"))) %>% 
+  select(model_number, term, value) %>% 
+  spread(model_number, value) %>% 
+  rename
+
+model_details <- models_combined %>% 
+  unnest(details) %>% 
+  mutate(N = model %>% map_dbl(nobs),
+         R2 = round(adj.r.squared, 2),
+         AIC = round(AIC, 2)) %>% 
+  select(model_number, N, R2, AIC) %>% 
+  gather(term, value, -model_number) %>% 
+  spread(model_number, value) %>% 
+  mutate_at(vars(-term), as.character)
+
+ugly_blank_row <- tibble(term = "", `Estimatee (SE)` = "", `p-value`= "")
+
+bind_rows(model_coefs,ugly_blank_row,  model_details) %>% 
+  gt() %>% 
+  tab_header(title = "Side-by-side regression table")

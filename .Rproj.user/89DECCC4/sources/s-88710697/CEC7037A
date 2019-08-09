@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1565303641506.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "CEC7037A",
+    "lastKnownWriteTime" : 1565303650,
+    "last_content_update" : 1565303650629,
+    "path" : "~/github/epa/R/shiny-run.R",
+    "project_path" : "R/shiny-run.R",
+    "properties" : {
+        "cursorPosition" : "2,15",
+        "scrollLine" : "0",
+        "tempName" : "Untitled2"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

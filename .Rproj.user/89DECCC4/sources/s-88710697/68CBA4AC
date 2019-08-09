@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1565299011304.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "68CBA4AC",
+    "lastKnownWriteTime" : 1565305700,
+    "last_content_update" : 1565305700650,
+    "path" : "~/github/misc/intro_r_workshop/appphil.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "52,0",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
