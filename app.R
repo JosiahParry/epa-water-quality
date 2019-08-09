@@ -157,7 +157,7 @@ shinyApp(
     # model output
     output$mod_output <- DT::renderDT({
       
-      mod <- lm(y ~ x , dat())
+      mod <- lm(log10(y) ~ log10(x) , dat())
 
       estimates <- broom::tidy(mod) %>% 
         mutate(term = case_when(
