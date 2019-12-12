@@ -16,7 +16,7 @@ vars_all <- c("ptl", "chla", "ntl")
 measures_lookup <- c("Chlorophylla", "Total Phosphorus", "Total Nitrogen")
 names(measures_lookup) <- c("chla", "ptl", "ntl")
 
-shinyApp(
+sa <-shinyApp(
   ui = dashboardPage(
     dashboardHeader(
       title = "US Lake Water Quality",
