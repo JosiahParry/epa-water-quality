@@ -15,21 +15,25 @@ knitr::opts_chunk$set(
 ```
 # Deploying R Content to Connect
 
-There are three ways to publish R content to RStudio Connect: push-button deployment from the RStudio IDE, from git, or from the R console.
+There are three ways to publish R content to RStudio Connect (RSC): push-button deployment from the RStudio IDE,  manual (or programmatic) deployment from the R console, or automated deployment from git.
 
-The deployment of R content uses the functionality in the [`rsconnect`](https://github.com/rstudio/rsconnect) package.
+Regardless of method, the deployment of R content uses the functionality in the [`rsconnect`](https://github.com/rstudio/rsconnect) package.
 
 The way that RSC works is by mimicking the R environment that the application or piece of content was developed in.  In order to do this RSC needs to know what the environment looked like. `rsconnect` creates a `manifest.json` file. This manifest document enumerates all of the packages used, their versions, and their sources. With this information RSC will install the packages if needed and create a sandboxed R process that mirrors that of the development environment. This ensures that there will be no package version conflicts. 
 
-Now, when we deploy content using the IDE, RStudio infers the application files (or we specify them manually using the GUI), then builds a `manifest.json` for us, and then packages the R files and any other associated files into a _bundle_. The bundle is received by RSC and the piece of content is recreated and deployed.
+## Push-button Deployment
+
+When we deploy content using push-button deployment in the IDE, RStudio infers the application files (or we specify them manually using the GUI), builds a `manifest.json` for us, and then packages the R files and any other associated files into a _bundle_. The bundle is received by RSC and the piece of content is recreated and deployed.
 
 ## Manual Deployment
 
 To deploy content manually from the R command line, we will use the function `rsconnect::deployApp()`. If you've connected your account to RSC via `Tools > Global Options > Publishing`, you will not need to manage credentials through the package. `deployApp()`, at minimum requires three things: a `manifest.json` file, the `server` name as a scalar character, and the files needed for the application supplied as a character vector to the argument `appFiles`. 
 
-We build the manifest using `rsconnect::writeManifest(appFiles = c("app.R"))`. Depending on how many files are used and their relative size, this can take anywhere from a few seconds to a few minutes. 
+We build the manifest using `rsconnect::writeManifest(appFiles = c("app.R"))`. Depending on how many files are used and their relative size, this can take anywhere from a few seconds to a few minutes.  You should re-write your manifest file if your packages or environment changes.
 
 Once the manifest has been created we can deploy the piece of content using `deployApp()`. `deployApp()` deploys from the current working directory. If you are deploying from a different directory than your working directory specify that in the `appFiles` paths or set the working directory with the `appDir` argument.
+
+Deployment with `deployApp()` can be manual or incorporated into a pipeline for programmatic deployment. 
 
 ```{r}
 rsconnect::deployApp(appFiles = c("app.R", "data/water_quality.csv"), server = "server-name")
@@ -43,7 +47,7 @@ Deploying from git requires RSC v1.7.6+ (I always recommend being on the most up
 
 ![](https://docs.rstudio.com/connect/user/images/screenshots/import-from-git.png)
 
-Following you will be prompted to specify which branch and piece of content you'd like to deploy (assuming there is more than one `manifest.json` file present), et voila! The deployment process has began. 
+You will then be prompted to specify which branch and piece of content you'd like to deploy (assuming there is more than one `manifest.json` file present), et voila! The deployment process is complete, and RSC will monitor the git repo, automatically updating if the repository changes.  You should re-write your manifest file if your packages or environment changes.
 
 
 See this [blog post](http://josiahparry.com/post/2019-08-09-epa-waterquality/) for a walk through of the code. 
