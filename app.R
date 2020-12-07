@@ -19,7 +19,7 @@ names(measures_lookup) <- c("chla", "ptl", "ntl")
 sa <-shinyApp(
   ui = dashboardPage(
     dashboardHeader(
-      title = "Test - US Lake Water Quality",
+      title = "US Lake Water Quality",
       titleWidth = 350
     ),
     dashboardSidebar(
